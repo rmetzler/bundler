@@ -148,5 +148,26 @@ module Spec
         end
       end
     end
+
+    def a_conflicting_index
+      build_index do
+        gem "excon", %w{0.14 0.15.4 0.25.1}
+
+        gem("mandrill-api", "0.1") do
+          dep "excon", "~> 0.15.4"
+        end
+
+        gem("fog", "1.10.1") do
+          dep "excon", "0.25.1"
+        end
+
+        gem("version_conflict_app", '1.0.0') do
+          dep "mandrill-api", ">= 0"
+          dep "fog", ">= 0"
+        end
+
+      end
+    end
+
   end
 end
